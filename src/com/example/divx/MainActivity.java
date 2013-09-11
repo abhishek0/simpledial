@@ -2,15 +2,17 @@ package com.example.divx;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.util.Log;
 import android.view.Menu;
 
 public class MainActivity extends Activity implements VideoListFragment.VideoActionListener {
-
+	Boolean init = false;
+	DialogFragment TVs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);        
     }
 
 
@@ -23,5 +25,9 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
     
     public void takeActionOnVideo(VideoInfo v) {
     	Log.d("DIVX", v.title);
+    	if (!init) {
+    		TVs = new TVListFragment();
+    		TVs.show(getFragmentManager(), "dialog");
+    	}
     }
 }
