@@ -15,9 +15,17 @@ import com.snapstick.dial.client.Device;
 import com.snapstick.dial.client.DialClient;
 
 public class TVListFragment extends DialogFragment {
+	TVSelectionListener listener = null;
+	public interface TVSelectionListener {
+		public void tvSelected(String udid);
+	}
+	public void setSelectionListener(TVSelectionListener l) {
+		listener = l;
+	}
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		List<Device> devices;
+		final TVSelectionListener tempListener = listener; 
 		try {
 			devices = DialClient.getDeviceList();
 		} catch (IOException e) {
@@ -27,13 +35,13 @@ public class TVListFragment extends DialogFragment {
 		}
 		
 		int i = 0;
-		Log.d("DIVX", "#########");
-		Log.d("DIVX", ""+devices.size());
+		
 		String[] names = new String[devices.size()];
 		for(Device d: devices) {
 			names[i] = d.getName();
 			i++;
 		}
+		final List<Device> s = devices;
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, names);
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 	    builder.setTitle("TVs near you");
@@ -41,7 +49,19 @@ public class TVListFragment extends DialogFragment {
 	               public void onClick(DialogInterface dialog, int which) {
 	               // The 'which' argument contains the index position
 	               // of the selected item
-	            	   Log.d("DIVX", "mamu");
+	            	   int i = 0;
+	            	   for(Device d: s) {
+	           			if (i==which) {
+	           				d.startApplication("Snapstick");
+	           				if (tempListener != null) {
+	           					String udid = d.getUDN().split(":")[1];
+	           					tempListener.tvSelected(udid);
+	           				}
+	           				Log.d("DIVX", "Selected TV no. " + i);
+	           				break;
+	           			}
+	           			i++;
+	           		}
 	               }
 	           });
 	    return builder.create();
