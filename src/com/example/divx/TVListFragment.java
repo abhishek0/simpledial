@@ -27,6 +27,8 @@ public class TVListFragment extends DialogFragment {
 		}
 		
 		int i = 0;
+		Log.d("DIVX", "#########");
+		Log.d("DIVX", ""+devices.size());
 		String[] names = new String[devices.size()];
 		for(Device d: devices) {
 			names[i] = d.getName();
