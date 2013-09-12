@@ -5,6 +5,7 @@ import com.snapstick.client.devices.SnapstickDevice;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -24,7 +25,9 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 	
 	Boolean isTVConnected = false;
 	Boolean snapstickReady = false;
+	String currentTVUDID;
 	SnapstickWrapper mWrapper;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,9 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
         mWrapper = SnapstickWrapper.getInstance(getApplicationContext());
 		mWrapper.setActivity(this);
 		mWrapper.init();
+		
+		TVs = new TVListFragment(this, mHandler,this.getLayoutInflater());    		
+		TVs.show(getFragmentManager(), "dialog");
     }
 
     @Override
@@ -68,11 +74,13 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 	public void takeActionOnVideo(VideoInfo v) {
     	Log.d("DIVX", v.title);
     	if (!isTVConnected && snapstickReady) {
-    		TVs = new TVListFragment();
-    		TVs.setSelectionListener(this);
-    		TVs.show(getFragmentManager(), "dialog");
+    		//TVs = new TVListFragment(this, mHandler);    		
+    		//TVs.show(getFragmentManager(), "dialog");
     	} else if (isTVConnected) {
     		//Snap the video url
+    		String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
+    		Log.d("DIVX","Sending video message - " + msgStartVideo);
+    		mWrapper.sendCustomMessage(msgStartVideo);
     	}
     }
 	
@@ -80,11 +88,24 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		switch(type)
 		{
 			case 0:
-				Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to TV.", Toast.LENGTH_SHORT);
-				toast.show();
-				isTVConnected = false;
+				if (isTVConnected) {
+					Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to TV.", Toast.LENGTH_SHORT);
+					toast.show();
+					isTVConnected = false;
+				}else{
+					mHandler.postDelayed(new Runnable(){
+						public void run() {
+							Log.d("DIVX", "Trying to connect with UDID - "+currentTVUDID);
+							mWrapper.connectWithUdid(currentTVUDID);
+						}
+					}, 2000);
+				}
+				
 				break;
 			case 1:
+				isTVConnected = true;
+				Toast toast = Toast.makeText(getApplicationContext(), "Connected to nearest TV.", Toast.LENGTH_SHORT);
+				toast.show();
 				break;
 			case 2:
 				Log.d("DIVX", "snapstick is ready");
@@ -107,8 +128,11 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 	
 	public void tvSelected(String udid) {
 		Log.d("DIVX", "tv selected udid - "+udid);
+		currentTVUDID = udid;
 		if (snapstickReady) {
 			mWrapper.connectWithUdid(udid);
 		}
-	}
+	}	
+	
+	private Handler mHandler = new Handler();
 }

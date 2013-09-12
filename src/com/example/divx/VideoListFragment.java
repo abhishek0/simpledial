@@ -36,7 +36,7 @@ public class VideoListFragment extends ListFragment {
 		
 		for(int x=0; x<20; x++) {
 			String title = "Video " + x;
-			list[x] = new VideoInfo(R.drawable.ic_launcher, title, "http://www.google.com");
+			list[x] = new VideoInfo(R.drawable.ic_launcher, title, "http://dps.edgesuite.net/DSAS/MKV/big_buck_bunny/SMIL/big_buck_bunny.smil");
 		}
         
 		VideoInfoAdapter adapter = new VideoInfoAdapter(getActivity(), R.layout.image_with_caption, list);

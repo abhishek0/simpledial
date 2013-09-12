@@ -66,7 +66,7 @@ public class SnapstickWrapper implements SnapstickCallback {
 	public void onDeviceDisconnect() {
 		Log.v("TESTING", "Connection closed ...");
 		SendEventToActivity(0,null);
-		client.getDevices();
+		//client.getDevices();
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class SnapstickWrapper implements SnapstickCallback {
 	public void onReady() {
 		Log.v("TESTING", "Client ready ...");
 		SendEventToActivity(2,null);
-		client.getDevices();
+		//client.getDevices();
 	}
 
 	@Override

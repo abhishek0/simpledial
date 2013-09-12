@@ -6,26 +6,43 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.snapstick.dial.client.Device;
 import com.snapstick.dial.client.DialClient;
 
 public class TVListFragment extends DialogFragment {
-	TVSelectionListener listener = null;
+	private final Handler uiThreadHandler;
+	private final TVSelectionListener tvSelectedListener;
+	private View dialogLayout;
+	
 	public interface TVSelectionListener {
 		public void tvSelected(String udid);
 	}
-	public void setSelectionListener(TVSelectionListener l) {
-		listener = l;
+	
+	TVListFragment(TVSelectionListener listener, Handler handler, LayoutInflater inflater){
+		this.tvSelectedListener = listener;
+		this.uiThreadHandler = handler;
+		
+		dialogLayout = inflater.inflate(R.layout.spinner, null);
 	}
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		List<Device> devices;
-		final TVSelectionListener tempListener = listener; 
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("TVs near you");
+		builder.setView(dialogLayout);
+		return builder.create();
+	}
+		/*List<Device> devices;
+		
 		try {
 			devices = DialClient.getDeviceList();
 		} catch (IOException e) {
@@ -53,9 +70,9 @@ public class TVListFragment extends DialogFragment {
 	            	   for(Device d: s) {
 	           			if (i==which) {
 	           				d.startApplication("Snapstick");
-	           				if (tempListener != null) {
-	           					String udid = d.getUDN().split(":")[1];
-	           					tempListener.tvSelected(udid);
+	           				if (tvSelectedListener != null) {
+	           					String udid = d.getUDN();
+	           					tvSelectedListener.tvSelected(udid);
 	           				}
 	           				Log.d("DIVX", "Selected TV no. " + i);
 	           				break;
@@ -65,5 +82,5 @@ public class TVListFragment extends DialogFragment {
 	               }
 	           });
 	    return builder.create();
-	}
+	}*/
 }
