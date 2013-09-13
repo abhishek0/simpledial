@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements VideoListFragment.VideoActionListener, SnapstickWrapper.SnapstickEventListener, TVListFragment.TVSelectionListener {
 	Boolean init = false;
-	TVListFragment TVs;
+	TVListFragment TVManager;
 	MulticastLock multicastLock = null;
 	
 	Boolean isTVConnected = false;
@@ -48,8 +48,8 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper.setActivity(this);
 		mWrapper.init();
 		
-		TVs = new TVListFragment(this, mHandler,this.getLayoutInflater());    		
-		TVs.show(getFragmentManager(), "dialog");
+		TVManager = new TVListFragment(this, mHandler);
+		getFragmentManager().beginTransaction().add(R.id.fragment_container, TVManager).commit();
     }
 
     @Override
@@ -109,7 +109,9 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 				break;
 			case 2:
 				Log.d("DIVX", "snapstick is ready");
+				//TVs = new TVListFragment(this, mHandler);				
 				snapstickReady = true;
+				TVManager.findTVs();
 				break;
 			case 3:				
 				break;

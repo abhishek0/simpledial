@@ -5,4 +5,5 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 	<string name="no_tv_found">Sorry. No TVs found near you!</string>
+	<string name="tv_list_title">TVs near you</string>
 </resources>
