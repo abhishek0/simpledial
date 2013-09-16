@@ -21,6 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements VideoListFragment.VideoActionListener, SnapstickWrapper.SnapstickEventListener, TVListFragment.TVSelectionListener {
 	Boolean init = false;
 	TVListFragment TVManager;
+	VideoListFragment videoList;
 	MulticastLock multicastLock = null;
 	
 	Boolean isTVConnected = false;
@@ -51,7 +52,10 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper.init();
 		
 		TVManager = new TVListFragment(this, mHandler);
-		getFragmentManager().beginTransaction().add(R.id.fragment_container, TVManager).commit();		
+		//getFragmentManager().beginTransaction().add(R.id.fragment_container, TVManager).commit();
+		
+		videoList = new VideoListFragment();
+		getFragmentManager().beginTransaction().replace(R.id.fragment_container, videoList).commit();;
     }
 
     @Override
@@ -72,10 +76,12 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper = null;
 	}
 
-	public void takeActionOnVideo(VideoInfo v) {    		
-		String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
-		Log.d("DIVX","Sending video message - " + msgStartVideo);
-		mWrapper.sendCustomMessage(msgStartVideo);    	
+	public void takeActionOnVideo(VideoInfo v) {
+		if (isTVConnected) {
+			String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
+			Log.d("DIVX","Sending video message - " + msgStartVideo);
+			mWrapper.sendCustomMessage(msgStartVideo);
+		}
     }
 	
 	@Override
@@ -105,7 +111,7 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 			case 2:
 				Log.d("DIVX", "snapstick is ready");
 				snapstickReady = true;
-				TVManager.findTVs();
+				//TVManager.findTVs();
 				break;
 			case 3:				
 				break;
@@ -124,6 +130,7 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		currentTVUDID = udid;
 		if (snapstickReady) {
 			mWrapper.connectWithUdid(udid);
+			getFragmentManager().beginTransaction().replace(R.id.fragment_container, videoList).commit();;
 		}
 	}	
 

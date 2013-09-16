@@ -40,7 +40,7 @@ public class VideoInfoAdapter extends ArrayAdapter<VideoInfo> {
     	}
     	
     	VideoInfo video = data[position];
-        holder.txtTitle.setText(video.title);
+        holder.txtTitle.setText(video.title);        
         holder.imgIcon.setImageResource(video.icon);
         holder.url = video.url;
         

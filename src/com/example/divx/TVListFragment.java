@@ -128,7 +128,7 @@ public class TVListFragment extends Fragment implements LoaderManager.LoaderCall
 				@Override
 			    public void onItemClick(AdapterView<?> parent, final View view,
 			    		int position, long id) {
-					//tvs[position].startApplication("Snapstick");
+					tvs[position].startApplication("Snapstick");
   					String udid = tvs[position].getUDN();
    					tvSelectedListener.tvSelected(udid);
 			    }
