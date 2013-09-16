@@ -28,6 +28,8 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 	String currentTVUDID;
 	SnapstickWrapper mWrapper;
 	
+	private Handler mHandler = new Handler();
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper.init();
 		
 		TVManager = new TVListFragment(this, mHandler);
-		getFragmentManager().beginTransaction().add(R.id.fragment_container, TVManager).commit();
+		getFragmentManager().beginTransaction().add(R.id.fragment_container, TVManager).commit();		
     }
 
     @Override
@@ -61,7 +63,6 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
     
     @Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		
 		if (multicastLock != null && multicastLock.isHeld()) {
@@ -71,19 +72,13 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper = null;
 	}
 
-	public void takeActionOnVideo(VideoInfo v) {
-    	Log.d("DIVX", v.title);
-    	if (!isTVConnected && snapstickReady) {
-    		//TVs = new TVListFragment(this, mHandler);    		
-    		//TVs.show(getFragmentManager(), "dialog");
-    	} else if (isTVConnected) {
-    		//Snap the video url
-    		String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
-    		Log.d("DIVX","Sending video message - " + msgStartVideo);
-    		mWrapper.sendCustomMessage(msgStartVideo);
-    	}
+	public void takeActionOnVideo(VideoInfo v) {    		
+		String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
+		Log.d("DIVX","Sending video message - " + msgStartVideo);
+		mWrapper.sendCustomMessage(msgStartVideo);    	
     }
 	
+	@Override
 	public void handleEvent(int type, String data) {		
 		switch(type)
 		{
@@ -109,7 +104,6 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 				break;
 			case 2:
 				Log.d("DIVX", "snapstick is ready");
-				//TVs = new TVListFragment(this, mHandler);				
 				snapstickReady = true;
 				TVManager.findTVs();
 				break;
@@ -124,10 +118,7 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		}
 	}
 	
-	public void updateDeviceList(SnapstickDevice ldev) {
-		
-	}
-	
+	@Override
 	public void tvSelected(String udid) {
 		Log.d("DIVX", "tv selected udid - "+udid);
 		currentTVUDID = udid;
@@ -135,6 +126,10 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 			mWrapper.connectWithUdid(udid);
 		}
 	}	
-	
-	private Handler mHandler = new Handler();
+
+	@Override
+	public void updateDeviceList(SnapstickDevice ldev) {
+		// TODO Auto-generated method stub
+		
+	}
 }

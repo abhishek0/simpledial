@@ -5,7 +5,7 @@
     android:background="#ffffff" >
 
     <TextView
-        android:id="@+id/tv_error_msg"
+        android:id="@+id/tv_list_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/tv_list_title"
@@ -18,7 +18,7 @@
         android:layout_width="fill_parent"
         android:layout_height="3dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_error_msg"
+        android:layout_below="@+id/tv_list_title"
         android:background="#7a1444" />
 
     <ProgressBar
@@ -31,11 +31,32 @@
 
     <ListView
         android:id="@+id/tvList"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:gravity="center_horizontal"
         android:layout_alignTop="@+id/view1" 
         android:visibility="gone"/>
     
-
+	<LinearLayout
+	    android:id="@+id/tv_error_msg" 
+	    android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:layout_gravity="center"
+    	android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" 
+        android:visibility="gone">
+	    
+	    <TextView        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_tv_found"/>
+	    
+	    <Button
+	        android:id="@+id/refresh_tv_list"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/try_again"/>
+	        
+	</LinearLayout>
 </RelativeLayout>
