@@ -9,6 +9,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
@@ -18,18 +21,55 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements VideoListFragment.VideoActionListener, SnapstickWrapper.SnapstickEventListener, TVListFragment.TVSelectionListener {
-	Boolean init = false;
-	TVListFragment TVManager;
-	VideoListFragment videoList;
-	MulticastLock multicastLock = null;
+public class MainActivity extends Activity implements VideoListFragment.VideoActionListener, SnapstickWrapper.SnapstickEventListener, TVListFragment.TVSelectionListener {	
+	private MulticastLock multicastLock = null;
 	
-	Boolean isTVConnected = false;
-	Boolean snapstickReady = false;
-	String currentTVUDID;
-	SnapstickWrapper mWrapper;
+	private VideoListFragment VideoManager;
+	private TVListFragment TVManager;
+	
+	private Boolean isTVConnected = false;
+	private Boolean snapstickReady = false;
+	
+	private String currentTVUDID;
+	private SnapstickWrapper mWrapper;
+	
+	private MainUIManager uiManager;
 	
 	private Handler mHandler = new Handler();
+	
+	private int snapstickReconnectTries = 0;
+	
+	public interface MainUIManager {
+		public void showTVList();
+		public void showVideoList();		
+		//public void showWIFIErrorScreen();
+	}
+	
+	private class UIManager implements MainUIManager {
+		private Fragment tvList;
+		private Fragment videoList;
+		private FragmentManager m;
+		
+		public UIManager(FragmentManager m, Fragment tvList, Fragment videoList) {
+			this.tvList = tvList;
+			this.videoList = videoList;
+			this.m = m;
+		}
+		@Override
+		public void showTVList() {
+			m.beginTransaction()
+			.replace(R.id.fragment_container, tvList).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+			.commit();
+		}		
+
+		@Override
+		public void showVideoList() {
+			m.beginTransaction()
+			.replace(R.id.fragment_container, videoList)
+			.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+			.commit();
+		}		
+	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +91,10 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper.setActivity(this);
 		mWrapper.init();
 		
-		TVManager = new TVListFragment(this, mHandler);
-		//getFragmentManager().beginTransaction().add(R.id.fragment_container, TVManager).commit();
+		TVManager = new TVListFragment(this);
+		VideoManager = new VideoListFragment(this);
 		
-		videoList = new VideoListFragment();
-		getFragmentManager().beginTransaction().replace(R.id.fragment_container, videoList).commit();;
+		uiManager = new UIManager(getFragmentManager(), TVManager, VideoManager);
     }
 
     @Override
@@ -75,47 +114,69 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		mWrapper.setActivity(null);
 		mWrapper = null;
 	}
-
-	public void takeActionOnVideo(VideoInfo v) {
+    
+    @Override
+	public void startVideo(VideoInfo v) {
 		if (isTVConnected) {
 			String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
 			Log.d("DIVX","Sending video message - " + msgStartVideo);
 			mWrapper.sendCustomMessage(msgStartVideo);
 		}
     }
-	
+    
+    @Override
+	public void play() {
+    	String msg = "{\"message\": \"play\"}";
+    	Log.d("DIVX","Sending play message");
+		mWrapper.sendCustomMessage(msg);
+    }
+    
+    @Override
+	public void pause() {
+    	String msg = "{\"message\": \"pause\"}";
+    	Log.d("DIVX","Sending pause message");
+		mWrapper.sendCustomMessage(msg);
+    }
+    @Override
+	public void stop() {
+    	String msg = "{\"message\": \"stop\"}";
+    	Log.d("DIVX","Sending stop message");
+		mWrapper.sendCustomMessage(msg);
+    }
+    
 	@Override
 	public void handleEvent(int type, String data) {		
 		switch(type)
 		{
 			case 0:
-				if (isTVConnected) {
-					Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to TV.", Toast.LENGTH_SHORT);
-					toast.show();
-					isTVConnected = false;
-				}else{
-					mHandler.postDelayed(new Runnable(){
-						public void run() {
-							Log.d("DIVX", "Trying to connect with UDID - "+currentTVUDID);
+				mHandler.postDelayed(new Runnable(){
+					public void run() {
+						if (snapstickReconnectTries < 5) {
+							Log.d("DIVX", "Trying to connect with UDID - " + currentTVUDID);
 							mWrapper.connectWithUdid(currentTVUDID);
+						}else{
+							Toast toast = Toast.makeText(getApplicationContext(), "Cannot connect to TV.", Toast.LENGTH_SHORT);
+							toast.show();
+							isTVConnected = false;
+							snapstickReconnectTries = 0;
+							uiManager.showTVList();							
 						}
-					}, 2000);
-				}
-				
+						snapstickReconnectTries++;
+					}
+				}, 2000);				
 				break;
 			case 1:
 				isTVConnected = true;
-				Toast toast = Toast.makeText(getApplicationContext(), "Connected to nearest TV.", Toast.LENGTH_SHORT);
-				toast.show();
+				VideoManager.showVideos();
 				break;
 			case 2:
 				Log.d("DIVX", "snapstick is ready");
 				snapstickReady = true;
-				//TVManager.findTVs();
+				uiManager.showTVList();
 				break;
-			case 3:				
+			case 3:
 				break;
-			case 4:				
+			case 4:
 				break;
 			case 5:
 				break;
@@ -130,13 +191,18 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		currentTVUDID = udid;
 		if (snapstickReady) {
 			mWrapper.connectWithUdid(udid);
-			getFragmentManager().beginTransaction().replace(R.id.fragment_container, videoList).commit();;
+			uiManager.showVideoList();			
 		}
-	}	
+	}
 
 	@Override
 	public void updateDeviceList(SnapstickDevice ldev) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void eatClicks(View v){
+		// Do nothing
+		v.setSoundEffectsEnabled(false);
 	}
 }

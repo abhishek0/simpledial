@@ -25,11 +25,44 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:paddingTop="10sp"
+            android:paddingBottom="5sp"
             android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"            
             android:textColor="#222222"
-            android:fontFamily="sans-serif-condensed" 
-            android:visibility="gone"/>
+            android:fontFamily="sans-serif-condensed"/>
+	 
+	 <LinearLayout
+	     android:id="@+id/video_action_buttons"
+	     android:layout_width="match_parent"
+    	 android:layout_height="wrap_content"
+   		 android:layout_gravity="center"
+   		 android:gravity="center"
+   		 android:paddingTop="5sp"
+   		 android:paddingBottom="5sp"
+   		 android:orientation="horizontal"
+   		 android:visibility="gone">
+	     
+	     <ImageView
+	         android:id="@+id/pause"
+	         android:layout_width="wrap_content"
+	     	 android:layout_height="wrap_content"
+	     	 android:contentDescription="@string/hello_world"
+	         android:src="@drawable/pause" />
+	     <ImageView
+	         android:id="@+id/play"
+	         android:layout_marginLeft="10sp"
+	         android:layout_marginRight="10sp"
+	         android:layout_width="wrap_content"
+	     	 android:layout_height="wrap_content"
+	     	 android:contentDescription="@string/hello_world"
+	         android:src="@drawable/play" />
+	     <ImageView
+	         android:id="@+id/stop"
+	         android:layout_width="wrap_content"
+	     	 android:layout_height="wrap_content"
+	     	 android:contentDescription="@string/hello_world"
+	         android:src="@drawable/stop" />
+	 </LinearLayout>
 </LinearLayout>
 

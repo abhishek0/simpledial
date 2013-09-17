@@ -29,7 +29,6 @@ import com.snapstick.dial.client.Device;
 import com.snapstick.dial.client.DialClient;
 
 public class TVListFragment extends Fragment implements LoaderManager.LoaderCallbacks {
-	private final Handler uiThreadHandler;
 	private final TVSelectionListener tvSelectedListener;
 	private	TVFragmentUIManager uiManager;
 	
@@ -42,9 +41,8 @@ public class TVListFragment extends Fragment implements LoaderManager.LoaderCall
 		public void showLoading();
 	}
 	
-	TVListFragment(TVSelectionListener listener, Handler handler){
+	TVListFragment(TVSelectionListener listener){
 		this.tvSelectedListener = listener;
-		this.uiThreadHandler = handler;				
 	}
 		
 	@Override
@@ -87,6 +85,7 @@ public class TVListFragment extends Fragment implements LoaderManager.LoaderCall
 		    	tryAgain();
 		    }
 		});
+		findTVs();
 	}
 	
 	@SuppressWarnings("unchecked")
