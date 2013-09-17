@@ -58,15 +58,16 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 		@Override
 		public void showTVList() {
 			m.beginTransaction()
-			.replace(R.id.fragment_container, tvList).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+			.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+			.replace(R.id.fragment_container, tvList)
 			.commit();
 		}		
 
 		@Override
 		public void showVideoList() {
 			m.beginTransaction()
+			.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
 			.replace(R.id.fragment_container, videoList)
-			.setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 			.commit();
 		}		
 	}
