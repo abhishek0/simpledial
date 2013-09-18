@@ -40,7 +40,7 @@ public class VideoListFragment extends Fragment {
 	public void onStart(){
 		super.onStart();
 		list[0] = new VideoInfo(R.drawable.cat, "Moody cat with a duckling", "http://dps.edgesuite.net/DSAS/MKV/big_buck_bunny/SMIL/big_buck_bunny.smil");
-		list[1] = new VideoInfo(R.drawable.puppy, "Cute puppy in lawn!", "http://dps.edgesuite.net/DSAS/MKV/big_buck_bunny/SMIL/big_buck_bunny.smil");
+		list[1] = new VideoInfo(R.drawable.puppy, "Cute puppy in lawn!", "http://192.168.1.149/DSAS/MKV/SMIL/P101.smil");
 		        
 		VideoInfoAdapter adapter = new VideoInfoAdapter(getActivity(), R.layout.image_with_caption, list);
 		videoList = (ListView) getActivity().findViewById(R.id.videoList);
