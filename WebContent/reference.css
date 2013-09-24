@@ -1,0 +1,295 @@
+
+.body {
+	/* Background color for Linux PC Browsers - black */
+	background:rgba(0, 0, 0, 1.0);
+
+	/* Background for devices - transparent to show video through */
+	/* background:rgba(0, 0, 0, 0.0); */
+}
+
+.redline
+{
+  border-top-style: solid;
+  border-top-color: #ff0000;
+  border-top-width: 1px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.logo
+{
+	position: relative;
+	top: 5px
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: normal;
+  font-family: sans-serif;
+  font-style: oblique;
+  color: #eeeeee;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.subtitle {
+  font-size: 1.0em;
+  font-weight: bold;
+  font-family: sans-serif;
+  color: #bbbbbb;
+  text-align: left;
+ }
+
+.revision {
+  font-family: sans-serif;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #777777;
+  margin: 5px 0px 0px 0px;
+  text-align: center;
+}
+
+
+.footer {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #777777;
+  margin: 10px 0px 0px 0px;
+  text-align: center;
+}
+
+.status {
+	font-size: 0.8em;
+	font-weight: normal;
+	font-family: sans-serif;
+	color: white;
+	text-align: left;
+	vertical-align: middle;	
+	margin-left: 40px;
+	margin-right:40px;
+}
+
+
+.playerStatus {
+	font-size: 1.0em;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #eeeeee;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.statusValue{
+	font-size: 1.0em;
+	font-weight: normal;
+	font-family: sans-serif;
+	font-style:italic; 
+	color: rgb(0,255,255);
+	text-align: left;
+	vertical-align: middle;	
+}
+
+.progress {
+	font-size: 1.0em;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #eeeeee;
+	text-align: left;
+	vertical-align: middle;
+	padding:0;
+}
+
+.progressValue{
+	font-size: 1.0em;
+	font-weight: normal;
+	font-family: sans-serif;
+	font-style:italic; 
+	color: rgb(255,255,0);
+	text-align: left;
+	vertical-align: middle;	
+}
+
+.levelAndTrack {
+	font-size: 1.0em;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #eeeeee;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.levelAndTrackValue{
+	font-size: 1.0em;
+	font-weight: normal;
+	font-family: sans-serif;
+	font-style:italic; 
+	color: rgb(0,255,0);
+	text-align: left;
+	vertical-align: middle;	
+}
+
+.uniqueId {
+	font-size: 1.0em;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: #eeeeee;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.uniqueIdValue{
+	font-size: 1.0em;
+	font-weight: normal;
+	font-family: sans-serif;
+	font-style:italic; 
+	color: rgb(255,0,0);
+	text-align: left;
+	vertical-align: middle;	
+}
+
+.spinId {
+	font-size: 1.5em;
+	font-weight: bold;
+	font-family: sans-serif;
+	color: rgb(0,255,0);
+	text-align: center;
+	vertical-align: middle;
+}
+
+.buttonDmd {
+	width:130px;
+	height:40px;
+	padding:0;
+	display:inline-block;
+	text-align:center;
+	line-height:38px;
+	font-family: 'Play', sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	color:#fff;
+	margin:10px auto;
+	border-width:2px;
+	border-style:solid;
+	border-color:#ccc #333 #333 #777;	
+	background: #878787;
+
+	position: relative;
+	margin: auto;
+
+}
+
+.buttonSF {
+	width:280px;
+	height:40px;
+	padding:0;
+	display:inline-block;
+	text-align:center;
+	line-height:38px;
+	font-family: 'Play', sans-serif;
+	font-size:24px;
+	font-weight:bold;
+	color:#fff;
+	margin:10px auto;
+	border-width:2px;
+	border-style:solid;
+	border-color:#ccc #333 #333 #777;	
+	background: #878787;
+
+	position: relative;
+	margin: auto;
+
+}
+
+.button {
+	width:130px;
+	height:40px;
+	padding:0;
+	display:inline-block;
+	text-align:center;
+	line-height:38px;
+	font-family: 'Play', sans-serif;
+	font-size:24px;
+	font-weight:bold;
+	color:#fff;
+	margin:10px auto;
+	border-width:2px;
+	border-style:solid;
+	border-color:#ccc #333 #333 #777;	
+	background: #878787;
+
+	position: relative;
+	margin: auto;
+
+}
+
+
+.buttonfocus {
+	background:#00ff00;
+}
+
+.buttondisabled {
+	color:#a7a7a7;
+}
+
+.popup {
+	background: #878787;
+	font-size: 1.0em;
+	font-weight: normal;
+	font-family: sans-serif;
+	color: #ee0000;
+	text-align: left;
+	vertical-align: middle;
+	z-index: 0;
+	padding: 0;
+	margin: auto;
+	position:absolute;
+	top: 44px;
+	left: 0px;
+	width: 200px;
+
+	border-style: solid;
+	border-color:#ccc #333 #000 #777;	
+	border-width: thick;
+}
+
+.main {
+	width: 1020px;
+	position: relative;
+	margin: auto;
+}
+
+.video-plugin {
+	text-align: center;
+	vertical-align: middle;
+	border-style: inset;
+	border-color: gray;
+	border-width: thick;
+}
+
+.video-box {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.menuitem {
+	width:180px;
+	height:30px;
+	padding:0;
+	display:inline-block;
+	text-align: left;
+	line-height:30px;
+	font-family: 'Play', sans-serif;
+	font-size:24px;
+	font-weight:bold;
+	color:#fff;
+	padding-left: 10px;
+	padding-bottom: 7px;
+	padding-right: 10px;
+	border-top: 1px solid black; 
+	background: #878787;
+
+	position: relative;
+	margin: auto;
+	margin-bottom: 2px;
+
+}

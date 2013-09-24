@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <link type="text/css" rel="stylesheet" href="reference.css">
+    <style type="text/css">
+      *.hidden{
+        display: none;
+      }
+    </style>
+    <title>DivX+ HD - DPS Reference App</title>
+    
+    <script type="text/javascript" src="javascript/main.js"></script>
+    <script type="text/javascript" src="javascript/rafsocket.js"></script>
+    <script type="text/javascript" src="javascript/contentURL.js"></script>
+    <script type="text/javascript" src="javascript/revision.js"></script>
+    <script type="text/javascript" src="javascript/keymap.js"></script>
+    <script type="text/javascript" src="javascript/jquery.js"></script>
+    <script type="text/javascript" src="javascript/WebSocketExternal.js"></script>
+    <script type="text/javascript" src="javascript/game-common-api.js"></script>    
+    <script type="text/javascript" src="javascript/game-server-api.js"></script>
+  </head>
+
+  <body class="body" onload="onBodyLoad();" >
+ 
+    <!-- Static Header  -->
+    <div align="center" class="hidden">
+	    <table style="width: 1020px">
+	    <tr><td width="125px"><span class="logo"><img alt="DivX+ HD" src="images/logo-divxplus.png" ></span></td><td width="11px"></td><td width="1px" style="border-right-style: dotted; border-left-style: dotted; border-color: #888888; border-width: 1px;"></td><td>
+		<table style="width: 400px;"><tr><td></td></tr><tr><td align="left"><span class="title">DivX Plus Streaming</span></td></tr><tr>
+	    <td align="left"><span class="subtitle">Reference App</span></td></tr></table></td></tr></table>
+    </div>
+	<div class="redline hidden" ></div>
+    
+     <!-- Warning for no Javascript  -->
+    <noscript>
+      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+        Your web browser must have JavaScript enabled
+        in order for the DivX+ HD Streaming Reference App system to operate.
+      </div>
+    </noscript>
+
+    
+    <div class="main" style="width:1077px">
+    	<div align="center" class="hidden">
+			<span id="stopButton" class="button">Stop</span>
+			<span id="pauseButton" class="button">Pause</span> 
+			<span id="playButton" class="button">Play</span>
+			<span id="rwButton" class="button">&lt;&lt;</span> 
+			<span id="ffButton" class="button">&gt;&gt;</span> 
+			<span id="audioButton" class="button" style="z-index: 1"><span>Audio</span><span id="audioMenu" class='popup' style="display: none;"></span></span>	
+			<span id="subtitleButton" class="button" style="z-index: 1"><span>Subtitle</span><span id="subtitleMenu" class='popup' style="display: none;"></span></span>
+			<span id="dmdButton" class="buttonSF">DMD Hash</span>
+			<span id="productDescButton" class="buttonSF">Product Values</span> 
+			<!--<span id="storefrontinfoButton" class="buttonSF">SFRegistrationDemo</span> 	-->
+			
+		</div>
+		<br/>
+		
+		<!-- START X86 SPECIFIC CODE: For support of DPS Plug-in for video playback on Linux x86 -->
+		<!-- (Remove this code on devices which render video directly to the screen without a plug-in.) -->
+		<div class="video-box">		
+			<object class="video-plugin" id="plugin" type="application/x-DPSPlugin" width="1066" height="600">
+			<param name="onload" value="pluginLoaded" />
+			<param name="wmode" value="transparent" /> 
+			</object>
+		</div>
+		<br/>
+		<!-- END X86 SPECIFIC CODE -->
+			
+		<div align="center">
+			<span id="playerStatus" class="playerStatus">Player Status: <span id="statusValue" class="statusValue">Value from raf</span></span>&nbsp;&nbsp;&nbsp;
+			<span id="progress" class="progress">Progress: <span id="progressValue" class="progressValue">na</span></span>&nbsp;&nbsp;&nbsp;
+			<span id="uniqueId" class="uniqueId">Unique ID: </span>
+			<span id="uniqueIdValue" class="uniqueIdValue">na</span><span id="spinId" class="spinId"> </span>
+			<br />
+			<span id="videoLevel" class="levelAndTrack">Video Level: <span id="videoLevelValue" class="levelAndTrackValue">na</span></span>&nbsp;&nbsp;&nbsp;
+			<span id="audio" class="levelAndTrack">Audio Track: <span id="audioTrack" class="levelAndTrackValue">na</span></span>&nbsp;&nbsp;&nbsp;
+			<span id="subtitle" class="levelAndTrack">Subtitle Track: <span id="subtitleTrack" class="levelAndTrackValue">na</span></span>
+		</div>
+
+ 	</div>
+
+    <!-- Footer  -->
+	<div class="footer">Copyright 2012, Rovi Corp</div><div id="revision" class="revision hidden"></div>
+	<div id="status" class="status"></div>
+</body>
+</html>
+
+
+
