@@ -19,9 +19,14 @@
 	        android:background="@drawable/rounded_image" />
 	</RelativeLayout>
 	
-	 <TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"     	
+    	android:gravity="right">    	
+	 	<TextView
             android:id="@+id/textLabel"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:paddingTop="10sp"
@@ -30,7 +35,17 @@
             android:textStyle="bold"
             android:gravity="center"            
             android:textColor="#222222"
+            android:layout_centerInParent="true"
             android:fontFamily="sans-serif-condensed"/>
+	 	<ImageView 
+	 	    android:id="@+id/snapTV"
+	 	    android:layout_width="36sp"
+            android:layout_height="36sp"
+            android:src="@drawable/tv_icon"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"            
+            android:contentDescription="@string/hello_world"/>
+	 </RelativeLayout>
 	 
 	 <LinearLayout
 	     android:id="@+id/video_action_buttons"

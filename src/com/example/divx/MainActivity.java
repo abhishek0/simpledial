@@ -8,11 +8,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -117,12 +123,33 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 	}
     
     @Override
-	public void startVideo(VideoInfo v) {
-		if (isTVConnected) {
-			String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
-			Log.d("DIVX","Sending video message - " + msgStartVideo);
-			mWrapper.sendCustomMessage(msgStartVideo);
-		}
+	public void startVideo(VideoInfo v) {		
+		Intent intent = new Intent("android.intent.action.VIEW");
+    	//intent.setType("video/dps");
+    	intent.setComponent(new ComponentName("com.divx.android.dps.sample", "com.divx.android.dps.sample.DPSSampleActivity"));
+    	intent.putExtra("movie_url", "SMIL:"+v.url);
+    	try
+    	{
+    		startActivity(intent);
+    	}
+    	catch (ActivityNotFoundException e)
+    	{
+    		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Error");
+            builder.setMessage("Please install the sample player reference app.");
+            builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+            builder.setPositiveButton("OK", new OnClickListener()
+            {
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    finish();
+                }
+            });
+            
+            builder.show();
+    	}
+		
     }
     
     @Override
@@ -143,6 +170,14 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
     	String msg = "{\"message\": \"stop\"}";
     	Log.d("DIVX","Sending stop message");
 		mWrapper.sendCustomMessage(msg);
+    }
+    @Override
+    public void snapVideo(VideoInfo v) {
+    	if (isTVConnected) {
+	    	String msgStartVideo = "{\"message\": \"start\", \"url\": \"" + v.url + "\"}";
+			Log.d("DIVX","Sending video message - " + msgStartVideo);
+			mWrapper.sendCustomMessage(msgStartVideo);
+    	}
     }
     
 	@Override
