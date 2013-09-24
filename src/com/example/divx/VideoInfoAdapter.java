@@ -23,7 +23,7 @@ public class VideoInfoAdapter extends ArrayAdapter<VideoInfo> {
     
     public interface SnappedVideoListener {
 		public void showTVControls();
-		public void updateCurrentVideoControls(View v);
+		public void updateCurrentVideoControls(int index);
 	}
     
     public VideoInfoAdapter(Context context, int layoutResourceId, VideoInfo[] data, VideoActionListener listener, SnappedVideoListener snapListener){
@@ -63,34 +63,35 @@ public class VideoInfoAdapter extends ArrayAdapter<VideoInfo> {
         holder.imgIcon.setImageResource(video.icon);
         holder.url = video.url;
         
-        snapListener.showTVControls();
-        
-        final VideoHolder h = holder;
+        holder.imgIcon.setOnClickListener(new View.OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				listener.startVideo(video);				
+			}
+		});        
+        final int pos = position; 
         holder.snapBtn.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				snapListener.updateCurrentVideoControls(h.actionBtns);				
+				snapListener.updateCurrentVideoControls(pos);				
 				listener.snapVideo(video);
 			}
 		});
-        holder.playBtn.setOnClickListener(new View.OnClickListener() {
-			
+        holder.playBtn.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				Log.d("DIVX", "Play pushed");
 				listener.play();				
 			}
 		});
-        holder.pauseBtn.setOnClickListener(new View.OnClickListener() {
-			
+        holder.pauseBtn.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				Log.d("DIVX", "Pause pushed");
 				listener.pause();				
 			}
 		});
-        holder.stopBtn.setOnClickListener(new View.OnClickListener() {
-			
+        holder.stopBtn.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				Log.d("DIVX", "Stop pushed");

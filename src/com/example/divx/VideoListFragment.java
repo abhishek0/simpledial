@@ -16,23 +16,27 @@ public class VideoListFragment extends Fragment implements VideoInfoAdapter.Snap
 	private VideoInfo[] list = new VideoInfo[2];
 	private ListView videoList;
 	private View progressBar;
-	private View currentVideoControls = null;
+	private int currentVideoIndex = -1;
 	
 	@Override
 	public void showTVControls() {
-		if (currentVideoControls != null) {
-			currentVideoControls.setVisibility(View.VISIBLE);
+		if (currentVideoIndex != -1 && videoList != null) {
+			videoList.getChildAt(currentVideoIndex)
+				.findViewById(R.id.video_action_buttons)
+				.setVisibility(View.VISIBLE);
 		}		
 	}
 
 	@Override
-	public void updateCurrentVideoControls(View v) {
-		if (currentVideoControls != null) {
-			currentVideoControls.setVisibility(View.GONE);
+	public void updateCurrentVideoControls(int index) {
+		if (currentVideoIndex != -1 && videoList != null) {
+			videoList.getChildAt(currentVideoIndex)
+			.findViewById(R.id.video_action_buttons)
+			.setVisibility(View.GONE);
 		}
-		this.currentVideoControls = v;
+		this.currentVideoIndex = index;
 		showTVControls();
-	}	
+	}
 	
 	
 	public interface VideoActionListener {
@@ -50,28 +54,24 @@ public class VideoListFragment extends Fragment implements VideoInfoAdapter.Snap
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+		list[0] = new VideoInfo(R.drawable.cat, "Moody cat with a duckling", "http://dps.edgesuite.net/DSAS/MKV/big_buck_bunny/SMIL/big_buck_bunny.smil");
+		list[1] = new VideoInfo(R.drawable.puppy, "Cute puppy in lawn!", "http://192.168.1.114/test_videos/P101.smil");
 		
-		return inflater.inflate(R.layout.video_list, container, false);
+		View vToReturn = inflater.inflate(R.layout.video_list, container, false);
+		
+		videoList = (ListView)vToReturn.findViewById(R.id.videoList);
+		VideoInfoAdapter adapter = new VideoInfoAdapter(getActivity(), R.layout.image_with_caption, list, listener, this);
+		videoList.setAdapter(adapter);
+		
+		progressBar = vToReturn.findViewById(R.id.progressBar2);
+		
+		return vToReturn;
     }
 	
 	@Override
 	public void onStart(){
 		super.onStart();
-		list[0] = new VideoInfo(R.drawable.cat, "Moody cat with a duckling", "http://dps.edgesuite.net/DSAS/MKV/big_buck_bunny/SMIL/big_buck_bunny.smil");
-		list[1] = new VideoInfo(R.drawable.puppy, "Cute puppy in lawn!", "http://192.168.1.114/test_videos/P101.smil");
-		
-		videoList = (ListView) getActivity().findViewById(R.id.videoList);
-		VideoInfoAdapter adapter = new VideoInfoAdapter(getActivity(), R.layout.image_with_caption, list, listener, this);
-		videoList.setAdapter(adapter);
-		videoList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-		    public void onItemClick(AdapterView<?> parent, final View view,
-		    		int position, long id) {
-				listener.startVideo(list[position]);
-		    }
-		});
-		
-		progressBar = getActivity().findViewById(R.id.progressBar2);		
+		showTVControls();
 	}
 	
 	public void showVideos() {
