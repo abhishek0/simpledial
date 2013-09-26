@@ -7,4 +7,5 @@
 	<string name="no_tv_found">Sorry. No TVs found near you!</string>
 	<string name="tv_list_title">TVs near you</string>
 	<string name="try_again">Try again.</string>
+	<string name="already_playing">Video currently playing on TV</string>
 </resources>
