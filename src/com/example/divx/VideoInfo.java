@@ -1,7 +1,7 @@
 package com.example.divx;
 
 public class VideoInfo {
-	public int icon;
+	public String icon_url; 
 	public String title;
 	public String url;
 	
@@ -9,9 +9,9 @@ public class VideoInfo {
 		super();
 	}
 	
-	public VideoInfo(int icon, String title, String url) {
+	public VideoInfo(String icon_url, String title, String url) {
 		super();
-		this.icon = icon;
+		this.icon_url = icon_url;
 		this.title = title;
 		this.url = url;
 	}

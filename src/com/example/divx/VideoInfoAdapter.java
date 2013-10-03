@@ -1,6 +1,9 @@
 package com.example.divx;
 
+import java.util.ArrayList;
+
 import com.example.divx.VideoListFragment.VideoActionListener;
+import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,7 +19,7 @@ import android.widget.TextView;
 public class VideoInfoAdapter extends ArrayAdapter<VideoInfo> {
 	Context context; 
     int layoutResourceId;    
-    VideoInfo data[] = null;
+    ArrayList<VideoInfo> data = null;
     VideoActionListener listener;
     View currentShown = null;
     SnappedVideoListener snapListener;
@@ -26,7 +29,7 @@ public class VideoInfoAdapter extends ArrayAdapter<VideoInfo> {
 		public void updateCurrentVideoControls(int index);
 	}
     
-    public VideoInfoAdapter(Context context, int layoutResourceId, VideoInfo[] data, VideoActionListener listener, SnappedVideoListener snapListener){
+    public VideoInfoAdapter(Context context, int layoutResourceId, ArrayList<VideoInfo> data, VideoActionListener listener, SnappedVideoListener snapListener){
     	super(context, layoutResourceId, data);
     	this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -58,9 +61,9 @@ public class VideoInfoAdapter extends ArrayAdapter<VideoInfo> {
     		holder = (VideoHolder)row.getTag();
     	}
     	
-    	final VideoInfo video = data[position];
-        holder.txtTitle.setText(video.title); 
-        holder.imgIcon.setImageResource(video.icon);
+    	final VideoInfo video = data.get(position);    	    	
+        holder.txtTitle.setText(video.title);
+        Picasso.with(context).load(video.icon_url).into(holder.imgIcon);
         holder.url = video.url;
         
         holder.imgIcon.setOnClickListener(new View.OnClickListener() {			

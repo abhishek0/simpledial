@@ -123,8 +123,8 @@ public class MainActivity extends Activity implements VideoListFragment.VideoAct
 	}
     
     @Override
-	public void startVideo(VideoInfo v) {		
-		Intent intent = new Intent("android.intent.action.VIEW");
+	public void startVideo(VideoInfo v) {
+    	Intent intent = new Intent("android.intent.action.VIEW");
     	//intent.setType("video/dps");
     	intent.setComponent(new ComponentName("com.divx.android.dps.sample", "com.divx.android.dps.sample.DPSSampleActivity"));
     	intent.putExtra("movie_url", "SMIL:"+v.url);
